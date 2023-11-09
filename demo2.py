@@ -8,7 +8,7 @@ import dotenv
 
 def print_messages(messages):
     print("[messages]")
-    for message in messages:
+    for message in reversed(list(messages)):
         for item in message.content:
             match item.type:
                 case 'text': print("text:",item.text.value)
@@ -80,4 +80,4 @@ else:
 
 
 run_steps = client.beta.threads.runs.steps.list(thread_id=thread.id, run_id=run.id)
-print_steps(run_steps)
+
