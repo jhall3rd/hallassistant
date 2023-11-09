@@ -2,6 +2,8 @@
 This demo shows the use of asyncio to structure client and server interaction
 with OpenAI clients.
 
+TODO: better organization of IO
+
 """
 
 import asyncio
@@ -54,7 +56,16 @@ def prepare_openai():
 
     return client,assistant,thread
 
-async def run_openai(msg, client,assistant,thread):
+async def run_openai(msg, client,assistant,thread,q_in, q_out):
+    """
+    Doesn't quite work.
+
+    :param msg:
+    :param client:
+    :param assistant:
+    :param thread:
+    :return:
+    """
 
     client.beta.threads.messages.create(
         thread_id=thread.id,
@@ -62,13 +73,10 @@ async def run_openai(msg, client,assistant,thread):
         content=msg,
     )
 
-    messages = client.beta.threads.messages.list(thread_id=thread.id)
-    print_messages(messages)
-
     run = client.beta.threads.runs.create(
         thread_id=thread.id,
         assistant_id=assistant.id,
-        instructions="Please address the user as Jane Doe. The user has a premium account.",
+        instructions="Please address the user as Alfred Clement.",
     )
 
     run = await poll_run(client, thread_id=thread.id, run_id=run.id)
@@ -77,26 +85,33 @@ async def run_openai(msg, client,assistant,thread):
         messages = client.beta.threads.messages.list(thread_id=thread.id)
         print_messages(messages)
     elif run.status == "requires_action":
-        # make up an answer
+        # we don't plan to really run a function. Instead we will ask the
+        # user for a value.
+
+
+
+
+
         tool_call = run.required_action.submit_tool_outputs.tool_calls[0]
+
         run = client.beta.threads.runs.submit_tool_outputs(
             thread_id=thread.id,
             run_id=run.id,
             tool_outputs=[
                 {
                     "tool_call_id": tool_call.id,
-                    "output": "-4C",
+                    "output": "22C",
                 }
             ]
         )
         run = await poll_run(client, thread_id=thread.id, run_id=run.id)
-
         assert run.status == "completed"  # maybe not, but error handling is dull.
         messages = client.beta.threads.messages.list(thread_id=thread.id)
-        print_messages(messages)
+        message =  messages.data[0].content[0].text.value
+        return message
+
     else:
         print(run.status)
-    return "[hj]"
 
 
 
@@ -115,7 +130,7 @@ async def server(q_in: asyncio.Queue, q_out: asyncio.Queue):
     while True:
         msg = await q_in.get()
         msg_in = msg[msg.index(" ")+1:]
-        msg_out = await run_openai(msg_in,client,assistant,thread)
+        msg_out = await run_openai(msg_in,client,assistant,thread, q_in, q_out)
         await q_out.put(msg_out)
 
 
@@ -130,7 +145,11 @@ async def client(name: int,
             elif text:
                 await q_out.put(f"[A] {text}")
                 msg = await q_in.get()
-                print(msg)
+                if msg.startswith("[T]"):
+                    tp = input("[T] ")
+                    await q_out.put(tp)
+                else:
+                    print(msg)
         except EOFError:
             break
 
