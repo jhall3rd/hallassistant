@@ -59,6 +59,55 @@
     text: The current weather in Point Scramble, New Brunswick is -4°C. Please let me know if there is anything else you need, Jane Doe.
     [/messages]
    ```
+   
+
+5, demo5.py -- interaction allowed, function calling still fake.
+
+   ```
+   [H] what's the weather in Columbus, Ohio?
+[messages]
+text: what's the weather in Columbus, Ohio?
+[/messages]
+[messages]
+text: what's the weather in Columbus, Ohio?
+text: The current weather in Columbus, Ohio, is -4 degrees Celsius. Stay warm, Jane Doe!
+[/messages]
+[hj]
+[H] how about Cleveland?
+[messages]
+text: what's the weather in Columbus, Ohio?
+text: The current weather in Columbus, Ohio, is -4 degrees Celsius. Stay warm, Jane Doe!
+text: how about Cleveland?
+[/messages]
+[messages]
+text: what's the weather in Columbus, Ohio?
+text: The current weather in Columbus, Ohio, is -4 degrees Celsius. Stay warm, Jane Doe!
+text: how about Cleveland?
+text: The current weather in Cleveland, Ohio, is also -4 degrees Celsius. It seems quite chilly out there, Jane Doe!
+[/messages]
+[hj]
+[H] how about at the equator?
+[messages]
+text: what's the weather in Columbus, Ohio?
+text: The current weather in Columbus, Ohio, is -4 degrees Celsius. Stay warm, Jane Doe!
+text: how about Cleveland?
+text: The current weather in Cleveland, Ohio, is also -4 degrees Celsius. It seems quite chilly out there, Jane Doe!
+text: how about at the equator?
+[/messages]
+[messages]
+text: what's the weather in Columbus, Ohio?
+text: The current weather in Columbus, Ohio, is -4 degrees Celsius. Stay warm, Jane Doe!
+text: how about Cleveland?
+text: The current weather in Cleveland, Ohio, is also -4 degrees Celsius. It seems quite chilly out there, Jane Doe!
+text: how about at the equator?
+text: It appears there may have been a misunderstanding, as the weather for "Equator" is indicated as -4 degrees Celsius, which is highly unlikely given the Equator's typically warm climate. There may be an error, or additional context may be required, such as a specific country or region near the Equator for an accurate weather report.
+
+If you have a specific location in mind on the Equator, please let me know, and I can provide the weather information for that area.
+[/messages]
+[hj]
+[H] !q
+[A] bye
+````
 
 
 Consistent problem solving is not guaranteed. That's how these things are.
