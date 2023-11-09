@@ -4,6 +4,8 @@
 2. demo2.py -- solve a tricky math problem
 3. demo3.py -- solve an easier math problem, but use asyncio for practice.
 
+The problem solving is not guaranteed. 
+
 To run these you need an OpenAI key, and you should place it in a file called .env
 in the following format
 ```text
