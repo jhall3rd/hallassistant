@@ -5,6 +5,20 @@ import time
 from openai import OpenAI
 import dotenv
 
+
+def print_messages(messages):
+    print("[messages]")
+    for message in messages:
+        for item in message.content:
+            match item.type:
+                case 'text': print("text:",item.text.value)
+                case _: print(item)
+    print("[/messages]")
+
+def print_steps(steps):
+    for step in steps:
+        print(step)
+
 dotenv.load_dotenv()
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
@@ -18,15 +32,17 @@ assistant = client.beta.assistants.create(
 
 thread = client.beta.threads.create()
 
+# trick question: this has no real solutions, because sin and cos are in range -1..+1, but it does have complex
+# solutions. In fact, the range of sine and cos with complex inputs is the whole complex plane.
 
 message = client.beta.threads.messages.create(
     thread_id=thread.id,
     role="user",
-    content="I need to solve the equation `3x + 11 = 14`. Can you help me?",
+    content="I need to solve the equation `sin(x) + cos(x) + 11 = 14`. Can you help me?",
 )
 
 messages = client.beta.threads.messages.list(thread_id=thread.id)
-print(messages)
+print_messages(messages)
 
 run = client.beta.threads.runs.create(
     thread_id=thread.id,
@@ -57,11 +73,11 @@ while time.perf_counter() < start + patience:
 
 if run.status == "completed":
     messages = client.beta.threads.messages.list(thread_id=thread.id)
-    print(messages)
+    print_messages(messages)
 else:
     print(run.status)
     sys.exit(-1)
 
 
 run_steps = client.beta.threads.runs.steps.list(thread_id=thread.id, run_id=run.id)
-print(run_steps)
+print_steps(run_steps)
