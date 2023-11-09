@@ -32,3 +32,5 @@ Q.idea/sonarlint/securityhotspotstore/3/c/3c84dcdc6bbe3d7817c49dcdc327b926fea180
 Q.idea/sonarlint/securityhotspotstore/2/6/26702297366fe355ec1383ba1e15f4ea339d2efa,7/8/78914863a4f2f2bf34c169112e7824a373299037
 w
 G.idea/sonarlint/issuestore/3/c/3c84dcdc6bbe3d7817c49dcdc327b926fea1808a,1/5/15ab6acc17bd4f2d048dc50beb0dfeb0086a0c18
+9
+	README.md,8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
