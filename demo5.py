@@ -11,7 +11,8 @@ from openai import OpenAI
 from util import poll_run, print_messages
 
 
-async def run_openai(msg):
+
+def prepare_openai():
     dotenv.load_dotenv()
     client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
@@ -50,7 +51,10 @@ async def run_openai(msg):
 
     thread = client.beta.threads.create()
 
-    #
+
+    return client,assistant,thread
+
+async def run_openai(msg, client,assistant,thread):
 
     client.beta.threads.messages.create(
         thread_id=thread.id,
@@ -106,10 +110,12 @@ async def server(q_in: asyncio.Queue, q_out: asyncio.Queue):
     :param q_out:
     :return:
     """
+
+    client,assistant,thread = prepare_openai()
     while True:
         msg = await q_in.get()
         msg_in = msg[msg.index(" ")+1:]
-        msg_out = await run_openai(msg_in)
+        msg_out = await run_openai(msg_in,client,assistant,thread)
         await q_out.put(msg_out)
 
 
