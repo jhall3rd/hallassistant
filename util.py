@@ -17,3 +17,13 @@ async def poll_run(client,thread_id,run_id, patience = 20):
                 return run
             case _:
                 raise UnexpectedStatus(run.status)
+
+
+def print_messages(messages):
+    print("[messages]")
+    for message in reversed(list(messages)):
+        for item in message.content:
+            match item.type:
+                case 'text': print("text:",item.text.value)
+                case _: print(item)
+    print("[/messages]")
