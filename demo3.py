@@ -1,10 +1,11 @@
 import os
 import sys
-import time
 import asyncio
 
 from openai import OpenAI
 import dotenv
+
+from util import poll_run
 
 
 def print_messages(messages):
@@ -12,18 +13,21 @@ def print_messages(messages):
     for message in reversed(list(messages)):
         for item in message.content:
             match item.type:
-                case 'text': print("text:",item.text.value)
-                case _: print(item)
+                case "text":
+                    print("text:", item.text.value)
+                case _:
+                    print(item)
     print("[/messages]")
+
 
 def print_steps(steps):
     for step in steps:
         print(step)
 
+
 async def main():
     dotenv.load_dotenv()
     client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-
 
     assistant = client.beta.assistants.create(
         name="Math Tutor",
@@ -34,7 +38,7 @@ async def main():
 
     thread = client.beta.threads.create()
 
-#
+    #
 
     client.beta.threads.messages.create(
         thread_id=thread.id,
@@ -51,26 +55,7 @@ async def main():
         instructions="Please address the user as Jane Doe. The user has a premium account.",
     )
 
-    patience = 180
-
-    start = time.perf_counter()
-
-    while time.perf_counter() < start + patience:
-        run = client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id)
-        match run.status:
-            case "queued" | "in_progress" | "cancelling":
-                await asyncio.sleep(1.0)
-            case "completed":
-                break
-            case "requires_action":
-                print("should be impossible")
-                sys.exit(-1)
-            case "failed":
-                break
-            case "cancelled":
-                break
-            case "expired":
-                break
+    run = await poll_run(client, thread_id=thread.id, run_id=run.id)
 
     if run.status == "completed":
         messages = client.beta.threads.messages.list(thread_id=thread.id)
@@ -78,6 +63,7 @@ async def main():
     else:
         print(run.status)
         sys.exit(-1)
+
 
 if __name__ == "__main__":
     asyncio.run(main())

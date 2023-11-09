@@ -9,6 +9,8 @@ import asyncio
 from openai import OpenAI
 import dotenv
 
+from util import poll_run
+
 
 def print_messages(messages):
     print("[messages]")
@@ -80,23 +82,7 @@ async def main():
         instructions="Please address the user as Jane Doe. The user has a premium account.",
     )
 
-    patience = 180
-    start = time.perf_counter()
-    while time.perf_counter() < start + patience:
-        run = client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id)
-        match run.status:
-            case "queued" | "in_progress" | "cancelling":
-                await asyncio.sleep(1.0)
-            case "completed":
-                break
-            case "requires_action":
-                break
-            case "failed":
-                break
-            case "cancelled":
-                break
-            case "expired":
-                break
+    run = await poll_run(client, thread_id=thread.id, run_id=run.id)
 
     if run.status == "completed":
         messages = client.beta.threads.messages.list(thread_id=thread.id)
@@ -114,23 +100,7 @@ async def main():
                 }
             ]
         )
-        patience = 180
-        start = time.perf_counter()
-        while time.perf_counter() < start + patience:
-            run = client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id)
-            match run.status:
-                case "queued" | "in_progress" | "cancelling":
-                    await asyncio.sleep(1.0)
-                case "completed":
-                    break
-                case "requires_action":
-                    break
-                case "failed":
-                    break
-                case "cancelled":
-                    break
-                case "expired":
-                    break
+        run = await poll_run(client,thread_id=thread.id,run_id=run.id)
 
         assert run.status == "completed" # maybe not, but error handling is dull.
         messages = client.beta.threads.messages.list(thread_id=thread.id)
