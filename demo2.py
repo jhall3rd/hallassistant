@@ -51,9 +51,7 @@ run = client.beta.threads.runs.create(
 )
 
 patience = 180
-
 start = time.perf_counter()
-
 while time.perf_counter() < start + patience:
     run = client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id)
     match run.status:

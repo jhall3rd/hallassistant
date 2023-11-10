@@ -10,6 +10,7 @@ import os
 import random
 
 import dotenv
+import requests
 from openai import OpenAI
 from util import poll_run
 
@@ -74,15 +75,14 @@ class Session:
         )
 
         thread = client.beta.threads.create()
-        self.client,self.assistant,self.thread = client,assistant,thread
+        self.client, self.assistant, self.thread = client, assistant, thread
         self.run = None
-
 
     @property
     def status(self):
         return self.run and self.run.status
 
-    async def start_run(self,message):
+    async def start_run(self, message):
         self.client.beta.threads.messages.create(
             thread_id=self.thread.id,
             role="user",
@@ -94,9 +94,9 @@ class Session:
             assistant_id=self.assistant.id,
             instructions="Please address the user as Alfred Clement.",
         )
-        self.run = await poll_run(self.client,
-                                  thread_id=self.thread.id,
-                                  run_id=self.run.id)
+        self.run = await poll_run(
+            self.client, thread_id=self.thread.id, run_id=self.run.id
+        )
 
     def get_result(self):
         assert self.run.status == "completed"
@@ -108,12 +108,14 @@ class Session:
         assert self.status == "requires_action"
         tool_call = self.run.required_action.submit_tool_outputs.tool_calls[0]
         run = self.client.beta.threads.runs.submit_tool_outputs(
-            thread_id= self.thread.id,
+            thread_id=self.thread.id,
             run_id=self.run.id,
             tool_outputs=[
                 {
                     "tool_call_id": tool_call.id,
-                    "output": get_weather(json.loads(tool_call.function.arguments)['location']),
+                    "output": get_weather(
+                        json.loads(tool_call.function.arguments)["location"]
+                    ),
                 }
             ],
         )
@@ -121,8 +123,7 @@ class Session:
         return self.get_result()
 
 
-
-async def run_server(q_in: asyncio.Queue, q_out: asyncio.Queue):
+async def run_server(q_in: asyncio.Queue[str], q_out: asyncio.Queue[str]):
     """
     Stub for openai LLM.
 
@@ -144,7 +145,7 @@ async def run_server(q_in: asyncio.Queue, q_out: asyncio.Queue):
         await q_out.put(msg_out)
 
 
-async def run_client(name: int, q_in: asyncio.Queue, q_out: asyncio.Queue):
+async def run_client(name: int, q_in: asyncio.Queue[str], q_out: asyncio.Queue[str]):
     while True:
         try:
             text = input("[H] ").strip()
@@ -153,7 +154,7 @@ async def run_client(name: int, q_in: asyncio.Queue, q_out: asyncio.Queue):
             elif text:
                 await q_out.put(f"[A] {text}")
                 msg = await q_in.get()
-                print('[A]',msg)
+                print("[A]", msg)
         except EOFError:
             break
 

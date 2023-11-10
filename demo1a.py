@@ -3,7 +3,7 @@ from openai import OpenAI
 import dotenv
 
 dotenv.load_dotenv()
-client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
+client = OpenAI()
 
 completion = client.chat.completions.create(
   model="gpt-3.5-turbo",

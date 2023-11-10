@@ -17,7 +17,7 @@ def print_messages(messages):
 
 
 dotenv.load_dotenv()
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+client = OpenAI()
 
 
 assistant = client.beta.assistants.create(
