@@ -39,3 +39,9 @@ G.idea/sonarlint/issuestore/3/c/3c84dcdc6bbe3d7817c49dcdc327b926fea1808a,1/5/15
 :
 
 demo_pt.py,c/4/c4499c047ef8707e77624ae1b2aa8d190e7a1161
+9
+	demo1a.py,f/5/f5d7d868aa8f7fa540aa0f9f91dfdca74d23c29a
+9
+	demo2a.py,8/1/81266f4c3ddc7d6546e1015e3e7414c675c308c6
+9
+	demo1b.py,3/3/33ae3ef3f861e14c6530841c0665dc9c6f8022bc

@@ -8,11 +8,10 @@ import asyncio
 import json
 import os
 import random
-from typing import Tuple
 
 import dotenv
 from openai import OpenAI
-from util import poll_run, print_messages
+from util import poll_run
 
 
 def get_weather(location):

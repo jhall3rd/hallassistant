@@ -15,9 +15,6 @@ def print_messages(messages):
                 case _: print(item)
     print("[/messages]")
 
-def print_steps(steps):
-    for step in steps:
-        print(step)
 
 dotenv.load_dotenv()
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
@@ -25,20 +22,16 @@ client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 assistant = client.beta.assistants.create(
     name="Math Tutor",
-    instructions="You are a personal math tutor. Write and run code to answer math questions.",
-    tools=[{"type": "code_interpreter"}],
-    model="gpt-4-1106-preview",
+    instructions="You are a creative computer scientist.",
+    model="gpt-3.5-turbo",
 )
 
 thread = client.beta.threads.create()
 
-# trick question: this has no real solutions, because sin and cos are in range -1..+1, but it does have complex
-# solutions. In fact, the range of sine and cos with complex inputs is the whole complex plane.
-
 message = client.beta.threads.messages.create(
     thread_id=thread.id,
     role="user",
-    content="I need to solve the equation `sin(x) + cos(x) + 11 = 14`. Can you help me? Complex domain solutions are acceptable.",
+    content="Compose a poem that explains the concept of recursion in programming.",
 )
 
 messages = client.beta.threads.messages.list(thread_id=thread.id)
@@ -47,7 +40,6 @@ print_messages(messages)
 run = client.beta.threads.runs.create(
     thread_id=thread.id,
     assistant_id=assistant.id,
-    instructions="Please address the user as Jane Doe. The user has a premium account.",
 )
 
 patience = 180
