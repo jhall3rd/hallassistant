@@ -61,53 +61,24 @@
    ```
    
 
-5, demo5.py -- interaction allowed, function calling still fake.
+5, demo5.py -- simple interactive loop.
 
    ```
-   [H] what's the weather in Columbus, Ohio?
-[messages]
-text: what's the weather in Columbus, Ohio?
-[/messages]
-[messages]
-text: what's the weather in Columbus, Ohio?
-text: The current weather in Columbus, Ohio, is -4 degrees Celsius. Stay warm, Jane Doe!
-[/messages]
-[hj]
-[H] how about Cleveland?
-[messages]
-text: what's the weather in Columbus, Ohio?
-text: The current weather in Columbus, Ohio, is -4 degrees Celsius. Stay warm, Jane Doe!
-text: how about Cleveland?
-[/messages]
-[messages]
-text: what's the weather in Columbus, Ohio?
-text: The current weather in Columbus, Ohio, is -4 degrees Celsius. Stay warm, Jane Doe!
-text: how about Cleveland?
-text: The current weather in Cleveland, Ohio, is also -4 degrees Celsius. It seems quite chilly out there, Jane Doe!
-[/messages]
-[hj]
-[H] how about at the equator?
-[messages]
-text: what's the weather in Columbus, Ohio?
-text: The current weather in Columbus, Ohio, is -4 degrees Celsius. Stay warm, Jane Doe!
-text: how about Cleveland?
-text: The current weather in Cleveland, Ohio, is also -4 degrees Celsius. It seems quite chilly out there, Jane Doe!
-text: how about at the equator?
-[/messages]
-[messages]
-text: what's the weather in Columbus, Ohio?
-text: The current weather in Columbus, Ohio, is -4 degrees Celsius. Stay warm, Jane Doe!
-text: how about Cleveland?
-text: The current weather in Cleveland, Ohio, is also -4 degrees Celsius. It seems quite chilly out there, Jane Doe!
-text: how about at the equator?
-text: It appears there may have been a misunderstanding, as the weather for "Equator" is indicated as -4 degrees Celsius, which is highly unlikely given the Equator's typically warm climate. There may be an error, or additional context may be required, such as a specific country or region near the Equator for an accurate weather report.
-
-If you have a specific location in mind on the Equator, please let me know, and I can provide the weather information for that area.
-[/messages]
-[hj]
-[H] !q
+[H] what's the weather in London?
+[A] The current weather in London is 12 degrees Celsius, Alfred Clement.
+[H] how about Paris
+[A] The current weather in Paris is 15 degrees Celsius, Alfred Clement.
+[H] how about Washington, Delaware?
+[A] The current weather in Washington, Delaware, is 1 degree Celsius, Alfred Clement.
+[H] Jakarta?
+[A] The current weather in Jakarta is 20 degrees Celsius, Alfred Clement.
+[H] Jamaica?
+[A] The current weather in Jamaica is 3 degrees Celsius, Alfred Clement. However, this seems quite unusual as Jamaica is typically much warmer. It could be a mistake or an anomaly. Please let me know if I can assist you further.
+[H] Atlantis?
+[A] Atlantis is a legendary island mentioned in the works of the Greek philosopher Plato. It's not a real location that can have a current weather report. Plato's stories are the only known source of information about this mythical place, and there is no evidence Atlantis ever existed. If you have another location whose weather you'd like to check, please let me know!
+[H] bye
 [A] bye
-````
+   ```
 
 
 Consistent problem solving is not guaranteed. That's how these things are.
