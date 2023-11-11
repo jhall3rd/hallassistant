@@ -126,6 +126,9 @@ def run_conversation():
                             match tool_call.type:
                                 case "function":
                                     print(run_step.type,tool_call.function)
+                                case "code":
+                                    print(run_step)
+
 
             messages = client.beta.threads.messages.list(thread_id=thread.id)
             return  messages.data[0].content[0].text.value
