@@ -41,6 +41,7 @@ def poll_run(run, thread):
                 break
     return run
 
+
 def run_conversation():
     # Step 1: create the assistant
     assistant = client.beta.assistants.create(
