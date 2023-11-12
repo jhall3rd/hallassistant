@@ -9,7 +9,6 @@ from util import poll_run, UnexpectedStatus
 load_dotenv()
 client = OpenAI()
 
-
 def run_conversation():
     assistant = client.beta.assistants.create(
         name="Dialogue tracker",
