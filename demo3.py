@@ -5,7 +5,7 @@ import asyncio
 from openai import OpenAI
 import dotenv
 
-from util import poll_run
+from util import poll_run_async
 
 
 def print_messages(messages):
@@ -55,7 +55,7 @@ async def main():
         instructions="Please address the user as Jane Doe. The user has a premium account.",
     )
 
-    run = await poll_run(client, thread_id=thread.id, run_id=run.id)
+    run = await poll_run_async(client, thread_id=thread.id, run_id=run.id)
 
     if run.status == "completed":
         messages = client.beta.threads.messages.list(thread_id=thread.id)

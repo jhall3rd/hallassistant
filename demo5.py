@@ -12,7 +12,7 @@ import random
 import dotenv
 import requests
 from openai import OpenAI
-from util import poll_run
+from util import poll_run_async
 
 
 def get_weather(location):
@@ -94,7 +94,7 @@ class Session:
             assistant_id=self.assistant.id,
             instructions="Please address the user as Alfred Clement.",
         )
-        self.run = await poll_run(
+        self.run = await poll_run_async(
             self.client, thread_id=self.thread.id, run_id=self.run.id
         )
 
@@ -119,7 +119,7 @@ class Session:
                 }
             ],
         )
-        self.run = await poll_run(self.client, thread_id=self.thread.id, run_id=run.id)
+        self.run = await poll_run_async(self.client, thread_id=self.thread.id, run_id=run.id)
         return self.get_result()
 
 
