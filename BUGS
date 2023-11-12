@@ -1,0 +1,18 @@
+[H] I want to travel to Columbus
+[T:U] I want to travel to Columbus
+[T:A] Sure! When are you planning to travel to Columbus?
+[A] Sure! When are you planning to travel to Columbus?
+[H] Tuesday
+[T:U] Tuesday
+[T:A] Great! Are you looking for any specific type of accommodation in Columbus?
+[A] Great! Are you looking for any specific type of accommodation in Columbus?
+[H] Hotel
+[T:U] Hotel
+[T:A] Got it! How many nights are you planning to stay?
+[A] Got it! How many nights are you planning to stay?
+[H] 5
+[T:U] 5
+[T:A] I've got all the information I need. I will now proceed to find the best hotel options for your stay in Columbus.
+[A] I've got all the information I need. I will now proceed to find the best hotel options for your stay in Columbus.
+[H] ok
+<produces a crash, thinks it has a resource but it doesn't>
