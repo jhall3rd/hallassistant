@@ -11,7 +11,6 @@ client = OpenAI()
 
 
 def run_conversation():
-    # Step 1: create the assistant
     assistant = client.beta.assistants.create(
         name="Dialogue tracker",
         instructions="""You are a travel assistant.""",
