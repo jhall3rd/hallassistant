@@ -12,7 +12,7 @@ client = OpenAI()
 def run_conversation():
     assistant = client.beta.assistants.create(
         name="Dialogue tracker",
-        instructions="""You are a travel assistant.""",
+        instructions="""You are a travel booking agent!.""",
         model="gpt-3.5-turbo-1106",
     )
 
@@ -29,9 +29,8 @@ def run_conversation():
         run = client.beta.threads.runs.create(
             thread_id=thread.id,
             assistant_id=assistant.id,
-            instructions="Please help the user to plan a trip.",
         )
-        run = poll_run(client=client, run_id=run.id, thread_id=thread.id)
+        run = poll_run(client=client, run=run, thread=thread)
         match run.status:
             case "completed":
                 messages = client.beta.threads.messages.list(thread_id=thread.id)

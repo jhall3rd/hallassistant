@@ -31,10 +31,10 @@ def print_messages(messages):
     print("[/messages]")
 
 
-def poll_run(client, run_id, thread_id, patience=20):
+def poll_run(client, run, thread, patience=20):
     start = time.perf_counter()
     while time.perf_counter() < start + patience:
-        run = client.beta.threads.runs.retrieve(thread_id=thread_id, run_id=run_id)
+        run = client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id)
         match run.status:
             case "queued" | "in_progress" | "cancelling":
                 time.sleep(2.0)

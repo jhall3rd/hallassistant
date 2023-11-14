@@ -50,8 +50,8 @@ def run_conversation():
 
     thread = client.beta.threads.create()
     dst = DialogStateTracker(thread)
-    user_message = input("[H] ")
 
+    user_message = input("[H] ")
     while user_message.strip() != "!q":
         client.beta.threads.messages.create(
             thread_id=thread.id,
@@ -63,7 +63,7 @@ def run_conversation():
             thread_id=thread.id,
             assistant_id=assistant.id,
         )
-        run = poll_run(client=client, run_id=run.id, thread_id=thread.id)
+        run = poll_run(client=client, run=run, thread=thread)
         match run.status:
 
             case "requires_action":
@@ -77,7 +77,7 @@ def run_conversation():
                     function_response = function_to_call(message=function_args.get("message"))
                     function_responses.append(function_response)
 
-                run = client.beta.threads.runs.submit_tool_outputs(
+                run2 = client.beta.threads.runs.submit_tool_outputs(
                     thread_id=thread.id,
                     run_id=run.id,
                     tool_outputs=[
@@ -86,7 +86,7 @@ def run_conversation():
                         for tool_call, function_response in zip(tool_calls, function_responses)
                     ],
                 )
-                run = poll_run(client=client, run_id=run.id, thread_id=thread.id)
+
                 messages = client.beta.threads.messages.list(thread_id=thread.id)
 
                 msg =  messages.data[0].content[0].text.value

@@ -11,11 +11,11 @@ dotenv.load_dotenv()
 client = OpenAI()
 
 
-assistant = client.beta.assistants.create(
-    name="Math Tutor",
-    instructions="You are a creative computer scientist.",
-    model="gpt-3.5-turbo",
+assistant = client.beta.assistants.retrieve(
+   assistant_id=os.environ['OPENAI_ASSISTANT_ID']
 )
+
+
 
 thread = client.beta.threads.create()
 
@@ -59,7 +59,7 @@ if run.status == "completed":
     print_messages(messages)
 else:
     print(run.status)
-client.beta.assistants.delete(assistant_id=assistant.id)
+
 
 
 
