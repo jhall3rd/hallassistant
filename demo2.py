@@ -5,29 +5,14 @@ import time
 from openai import OpenAI
 import dotenv
 
-
-def print_messages(messages):
-    print("[messages]")
-    for message in reversed(list(messages)):
-        for item in message.content:
-            match item.type:
-                case 'text': print("text:",item.text.value)
-                case _: print(item)
-    print("[/messages]")
-
-def print_steps(steps):
-    for step in steps:
-        print(step)
+from util import print_messages
 
 dotenv.load_dotenv()
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 
-assistant = client.beta.assistants.create(
-    name="Math Tutor",
-    instructions="You are a personal math tutor. Write and run code to answer math questions.",
-    tools=[{"type": "code_interpreter"}],
-    model="gpt-4-1106-preview",
+assistant = client.beta.assistants.retrieve(
+    assistant_id=os.environ['OPENAI_MATH_TUTOR']
 )
 
 thread = client.beta.threads.create()
@@ -76,6 +61,4 @@ else:
     print(run.status)
     sys.exit(-1)
 
-
-run_steps = client.beta.threads.runs.steps.list(thread_id=thread.id, run_id=run.id)
 
