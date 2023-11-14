@@ -29,7 +29,12 @@ async def main():
     dotenv.load_dotenv()
     client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
-    assistant = client.beta.assistants.retrieve(assistant_id=os.environ['OPENAI_MATH_ASSISTANT_TUTOR'])
+    assistant = client.beta.assistants.create(
+        name="Math Tutor",
+        instructions="You are a personal math tutor. Write and run code to answer math questions.",
+        tools=[{"type": "code_interpreter"}],
+        model="gpt-3.5-turbo-1106",
+    )
 
     thread = client.beta.threads.create()
 
