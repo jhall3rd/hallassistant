@@ -35,6 +35,7 @@ run = client.beta.threads.runs.create(
     instructions="Please address the user as Jane Doe. The user has a premium account.",
 )
 
+
 patience = 180
 start = time.perf_counter()
 while time.perf_counter() < start + patience:
