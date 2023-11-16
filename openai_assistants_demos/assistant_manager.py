@@ -7,6 +7,13 @@ from util import print_messages, retrieve_assistant
 
 
 class Manager:
+    """
+    Manager for assistant and thread life cycle.
+
+    The
+
+
+    """
     load_dotenv()
     def __init__(self):
         self.client = OpenAI()
