@@ -62,7 +62,7 @@ async def main():
         print_messages(messages)
     else:
         print(run.status)
-        sys.exit(-1)
+
 
 
 if __name__ == "__main__":

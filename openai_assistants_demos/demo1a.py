@@ -49,7 +49,7 @@ A poetic melody, a dance in cyberspace.
 With each function's call, a symphony rings,
 A journey of wonders, as recursion sings."
 """},
-    {"role": "user","content": "translate into Germsn"},
+    {"role": "user","content": "translate into German"},
   ]
 )
 

@@ -1,4 +1,29 @@
-# Some basic demos of OpenAI's Assistant framework
+# Some demos of OpenAI's Assistant framework
+
+OpenAI's new interface offers some conveniences for people interested in building customized assistants, either 
+in code or not. 
+
+
+## Surprises
+
+One feature that is not immediately obvious is that the creation of an assistant triggers the
+storage of that assistant's configuration details as part of an OpenAI account. The first iteration of this 
+created hundreds of assistants before I realized.
+
+The real reason for this, I think, is that the API is designed to make sense even if your tool of choice
+is curl, and you really don't want to write code. As a result of that, it is almost always better to avoid 
+relying on previously collected representations of threads etc, and to constantly retrieve from the cloud.
+
+
+## Instructions
+
+1. Clone this repository
+2. To run these you need an OpenAI key, and you should place it in a file called .env
+in the following format
+```text
+OPENAI_API_KEY=<your_key>
+3. Run pip install -e . 
+
 
 1. demo1.py -- generate poetry
 2. demo2.py -- solve a tricky math problem
@@ -85,8 +110,5 @@
 
 Consistent problem solving is not guaranteed. That's how these things are.
 
-To run these you need an OpenAI key, and you should place it in a file called .env
-in the following format
-```text
-OPENAI_API_KEY=<your_key>
+
 ```

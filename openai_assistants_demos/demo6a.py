@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 from openai import OpenAI
 import json
 
+from openai_assistants_demos.util import retrieve_assistant
+
 load_dotenv()
 client = OpenAI()
 
@@ -44,32 +46,7 @@ def poll_run(run, thread):
 
 def run_conversation():
     # Step 1: create the assistant
-    assistant = client.beta.assistants.create(
-        name="Weather Advisor",
-        instructions="Discuss the weather.",
-        model="gpt-3.5-turbo-1106",
-        tools = [
-        {
-            "type": "function",
-            "function": {
-                "name": "get_current_weather",
-                "description": "Get the current weather in a given location",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "location": {
-                            "type": "string",
-                            "description": "The city and state, e.g. San Francisco, CA",
-                        },
-                        "unit": {"type": "string", "enum": ["celsius", "fahrenheit"]},
-                    },
-                    "required": ["location"],
-                },
-            },
-        }
-
-    ])
-
+    assistant = retrieve_assistant(client, "demo_weather_bot_gpt3")
     # Step 2: make a thread in which to keep the conversation
     thread = client.beta.threads.create()
 

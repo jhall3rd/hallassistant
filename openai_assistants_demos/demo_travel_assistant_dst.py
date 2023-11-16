@@ -1,11 +1,11 @@
 """
-This is just a generic travel agent.
+Generic travel agent, attempting dialog tracking,
 """
 import json
 
 from dotenv import load_dotenv
 from openai import OpenAI
-from util import poll_run, UnexpectedStatus
+from util import poll_run, UnexpectedStatus, retrieve_assistant
 
 load_dotenv()
 client = OpenAI()
@@ -16,37 +16,14 @@ class DialogStateTracker:
 
     def __call__(self,message):
         print(f"I [T:U] {message}")
-        return message
+        return f"[A] {message} was tracked"
     def track_assistant_message(self,message):
         print(f"[T:A] {message}")
 
 
 def run_conversation():
-    assistant = client.beta.assistants.create(
-        name="Dialogue tracker",
-        instructions="""You are a travel assistant. Use the dialog state tracker to record what you say.""",
-        model="gpt-3.5-turbo-1106",
-        tools = [
-        {
-            "type": "function",
-            "function": {
-                "name": "track_dialogue",
-                "description": "Record the dialogue",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "message": {
-                            "type": "string",
-                            "description": "The message sent.",
-                        },
-                    },
-                    "required": ["message"],
-                },
-            },
-        }
+    assistant = retrieve_assistant(client,"tracker_assistant_gpt_3")
 
-    ]
-    )
 
     thread = client.beta.threads.create()
     dst = DialogStateTracker(thread)
@@ -63,7 +40,7 @@ def run_conversation():
             thread_id=thread.id,
             assistant_id=assistant.id,
         )
-        run = poll_run(client=client, run=run, thread=thread)
+        run = poll_run(client=client, run=run, thread=thread, patience=60)
         match run.status:
 
             case "requires_action":
@@ -99,6 +76,7 @@ def run_conversation():
                 yield msg
             case _:
                 raise UnexpectedStatus(run.status)
+
         user_message = input("[H] ")
 
 

@@ -3,18 +3,14 @@ import time
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from util import print_messages
+from util import print_messages, retrieve_assistant
 
 
 class Manager:
     load_dotenv()
     def __init__(self):
         self.client = OpenAI()
-        self.assistant = self.client.beta.assistants.create(
-            name="Dialogue tracker",
-            instructions="""You are a travel booking agent.""",
-            model="gpt-3.5-turbo-1106",
-        )
+        self.assistant = retrieve_assistant(self.client,"demo_weather_bot_gpt3")
         thread = self.client.beta.threads.create()
         self.thread_id = thread.id
         self.run_id = None

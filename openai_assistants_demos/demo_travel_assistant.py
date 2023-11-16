@@ -4,17 +4,15 @@ This is just a generic travel agent.
 
 from dotenv import load_dotenv
 from openai import OpenAI
-from util import poll_run, UnexpectedStatus
+from util import poll_run, UnexpectedStatus, retrieve_assistant
 
 load_dotenv()
 client = OpenAI()
 
 def run_conversation():
-    assistant = client.beta.assistants.create(
-        name="Dialogue tracker",
-        instructions="""You are a travel booking agent!.""",
-        model="gpt-3.5-turbo-1106",
-    )
+
+
+    assistant  = retrieve_assistant(client, 'travel_assistant_gpt_35_turbo')
 
     thread = client.beta.threads.create()
     user_message = input("[H] ")
@@ -30,7 +28,7 @@ def run_conversation():
             thread_id=thread.id,
             assistant_id=assistant.id,
         )
-        run = poll_run(client=client, run=run, thread=thread)
+        run = poll_run(client=client, run=run, thread=thread, patience=60)
         match run.status:
             case "completed":
                 messages = client.beta.threads.messages.list(thread_id=thread.id)

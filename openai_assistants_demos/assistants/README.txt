@@ -1,0 +1,1 @@
+This directory is a registry for assistants. It contains JSON files for each type of assistant created.

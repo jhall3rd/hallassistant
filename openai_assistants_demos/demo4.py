@@ -8,7 +8,7 @@ import asyncio
 from openai import OpenAI
 import dotenv
 
-from util import poll_run_async, print_messages
+from util import poll_run_async, print_messages, retrieve_assistant
 
 
 def print_steps(steps):
@@ -17,40 +17,10 @@ def print_steps(steps):
 
 async def main():
     dotenv.load_dotenv()
-    client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+    client = OpenAI()
 
-    assistant = client.beta.assistants.create(
-        instructions="You are a weather bot. Use the provided functions to answer questions.",
-        model="gpt-4-1106-preview",
-        tools=[{
-            "type": "function",
-            "function": {
-                "name": "getCurrentWeather",
-                "description": "Get the weather in location",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "location": {"type": "string", "description": "The city and state e.g. San Francisco, CA"},
-                        "unit": {"type": "string", "enum": ["c", "f"]}
-                    },
-                    "required": ["location"]
-                }
-            }
-        }, {
-            "type": "function",
-            "function": {
-                "name": "getNickname",
-                "description": "Get the nickname of a city",
-                "parameters": {
-                    "type": "object",
-                    "properties": {
-                        "location": {"type": "string", "description": "The city and state e.g. San Francisco, CA"},
-                    },
-                    "required": ["location"]
-                }
-            }
-        }]
-    )
+    assistant = retrieve_assistant(client, "demo_weather_bot")
+
 
 
     thread = client.beta.threads.create()
@@ -98,7 +68,7 @@ async def main():
 
     else:
         print(run.status)
-        sys.exit(-1)
+
 
 if __name__ == "__main__":
     asyncio.run(main())

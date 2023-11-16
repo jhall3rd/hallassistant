@@ -5,24 +5,23 @@ import time
 from openai import OpenAI
 import dotenv
 
-from util import print_messages
+from util import print_messages, retrieve_assistant
 
 dotenv.load_dotenv()
-client = OpenAI()
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 
-assistant = client.beta.assistants.retrieve(
-   assistant_id=os.environ['OPENAI_ASSISTANT_ID']
-)
-
-
+assistant = retrieve_assistant(client,"math_tutor")
 
 thread = client.beta.threads.create()
+
+# trick question: this has no real solutions, because sin and cos are in range -1..+1, but it does have complex
+# solutions. In fact, the range of sine and cos with complex inputs is the whole complex plane.
 
 message = client.beta.threads.messages.create(
     thread_id=thread.id,
     role="user",
-    content="Compose a poem that explains the concept of recursion in programming.",
+    content="I need to solve the equation `sin(x) + cos(x) + 11 = 14`. Can you help me? Complex domain solutions are acceptable.",
 )
 
 messages = client.beta.threads.messages.list(thread_id=thread.id)
@@ -31,12 +30,12 @@ print_messages(messages)
 run = client.beta.threads.runs.create(
     thread_id=thread.id,
     assistant_id=assistant.id,
+    instructions="Please address the user as Jane Doe. The user has a premium account.",
 )
 
+
 patience = 180
-
 start = time.perf_counter()
-
 while time.perf_counter() < start + patience:
     run = client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id)
     match run.status:
@@ -59,7 +58,7 @@ if run.status == "completed":
     print_messages(messages)
 else:
     print(run.status)
-
+    sys.exit(-1)
 
 
 

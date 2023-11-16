@@ -12,7 +12,7 @@ import random
 import dotenv
 import requests
 from openai import OpenAI
-from util import poll_run_async
+from util import poll_run_async, retrieve_assistant
 
 
 def get_weather(location):
@@ -30,49 +30,9 @@ def get_weather(location):
 class Session:
     def __init__(self):
         dotenv.load_dotenv()
-        client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+        client = OpenAI()
 
-        assistant = client.beta.assistants.create(
-            instructions="You are a weather bot. Use the provided functions to answer questions.",
-            model="gpt-4-1106-preview",
-            tools=[
-                {
-                    "type": "function",
-                    "function": {
-                        "name": "getCurrentWeather",
-                        "description": "Get the weather in location",
-                        "parameters": {
-                            "type": "object",
-                            "properties": {
-                                "location": {
-                                    "type": "string",
-                                    "description": "The city and state e.g. San Francisco, CA",
-                                },
-                                "unit": {"type": "string", "enum": ["c", "f"]},
-                            },
-                            "required": ["location"],
-                        },
-                    },
-                },
-                {
-                    "type": "function",
-                    "function": {
-                        "name": "getNickname",
-                        "description": "Get the nickname of a city",
-                        "parameters": {
-                            "type": "object",
-                            "properties": {
-                                "location": {
-                                    "type": "string",
-                                    "description": "The city and state e.g. San Francisco, CA",
-                                },
-                            },
-                            "required": ["location"],
-                        },
-                    },
-                },
-            ],
-        )
+        assistant = retrieve_assistant(client, "demo_weather_bot")
 
         thread = client.beta.threads.create()
         self.client, self.assistant, self.thread = client, assistant, thread
