@@ -12,7 +12,8 @@ import random
 import dotenv
 import requests
 from openai import OpenAI
-from util import poll_run_async, retrieve_assistant
+from util import poll_run_async
+from openai_assistants_demos.registry import retrieve_assistant
 
 
 def get_weather(location):

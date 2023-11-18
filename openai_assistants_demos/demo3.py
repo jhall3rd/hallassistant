@@ -27,7 +27,7 @@ def print_steps(steps):
 
 async def main():
     dotenv.load_dotenv()
-    client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+    client = OpenAI()
 
     assistant = client.beta.assistants.create(
         name="Math Tutor",

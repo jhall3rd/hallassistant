@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 import json
 
-from openai_assistants_demos.util import retrieve_assistant
+from openai_assistants_demos.registry import retrieve_assistant
 
 load_dotenv()
 client = OpenAI()

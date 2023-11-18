@@ -8,7 +8,8 @@ import asyncio
 from openai import OpenAI
 import dotenv
 
-from util import poll_run_async, print_messages, retrieve_assistant
+from util import poll_run_async, print_messages
+from openai_assistants_demos.registry import retrieve_assistant
 
 
 def print_steps(steps):

@@ -5,7 +5,8 @@ import time
 from openai import OpenAI
 import dotenv
 
-from util import print_messages, retrieve_assistant
+from util import print_messages
+from openai_assistants_demos.registry import retrieve_assistant
 
 dotenv.load_dotenv()
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))

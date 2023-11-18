@@ -3,7 +3,8 @@ import time
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from util import print_messages, retrieve_assistant
+from util import print_messages
+from openai_assistants_demos.registry import retrieve_assistant
 
 
 class Manager:

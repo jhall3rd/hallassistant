@@ -5,7 +5,8 @@ import json
 
 from dotenv import load_dotenv
 from openai import OpenAI
-from util import poll_run, UnexpectedStatus, retrieve_assistant
+from util import poll_run, UnexpectedStatus
+from openai_assistants_demos.registry import retrieve_assistant
 
 load_dotenv()
 client = OpenAI()
